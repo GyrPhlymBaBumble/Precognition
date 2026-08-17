@@ -1663,7 +1663,24 @@ export default function (this: any): Interfaces.State {
   });
   connection.onMessage('TPN', data => {
     const conv = state.privateMap[data.character.toLowerCase()];
-    if (conv !== undefined) conv.typingStatus = data.status;
+    if (conv !== undefined)
+    {
+      conv.typingStatus = data.status;
+    }
+    else
+    {
+      const char = core.character.get(data.character);
+
+      const text = '[user]${data.character}[/user] just started typing.'
+      const message = createMessage(MessageType.Message, char, text, new Date());
+
+      EventBus.$emit('private message', { message});
+
+      const conv2 = state.getPrivate(char);
+      await conv2.addMessage(message);
+      conv2.typingStatus = data.status;
+    }
+    
   });
   connection.onMessage('CBU', async (data, time) => {
     const conv = state.channelMap[data.channel.toLowerCase()];
