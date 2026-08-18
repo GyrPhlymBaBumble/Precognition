@@ -1668,7 +1668,6 @@ export default function (this: any): Interfaces.State {
     } else {
       const char = core.characters.get(data.character);
 
-      const text = '[user]${data.character}[/user] just started typing.';
       const message = createMessage(
         MessageType.Message,
         char,
