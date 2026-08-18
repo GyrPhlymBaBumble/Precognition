@@ -1661,7 +1661,7 @@ export default function (this: any): Interfaces.State {
     )
       await conv.addMessage(message);
   });
-  connection.onMessage('TPN', data => {
+  connection.onMessage('TPN', async(data) => {
     const conv = state.privateMap[data.character.toLowerCase()];
     if (conv !== undefined)
     {
@@ -1669,7 +1669,7 @@ export default function (this: any): Interfaces.State {
     }
     else
     {
-      const char = core.character.get(data.character);
+      const char = core.characters.get(data.character);
 
       const text = '[user]${data.character}[/user] just started typing.'
       const message = createMessage(MessageType.Message, char, text, new Date());
